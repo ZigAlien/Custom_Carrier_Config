@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<carrier_config>
+    <boolean name="apn_expand_bool" value="true"/>
+    <boolean name="allow_adding_apns_bool" value="true"/>
+    <boolean name="carrier_settings_enable_bool" value="true"/>
+    <boolean name="carrier_volte_available_bool" value="false" />
+    <boolean name="editable_enhanced_4g_lte_bool" value="true"/>
+    <int name="maxSubjectLength" value="80"/>
+    <string name="carrier_name_string">Abcdefg</string>
+    <string-array name="read_only_apn_fields_string_array" num="0">
+    </string-array>
+</carrier_config>
