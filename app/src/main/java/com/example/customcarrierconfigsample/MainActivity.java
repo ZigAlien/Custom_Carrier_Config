@@ -1,16 +1,16 @@
 package com.example.customcarrierconfigsample;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.telephony.CarrierConfigManager;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
@@ -20,18 +20,18 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 
+/*
+Main Activity.
+Shows subscription info and whether app has carrier privileges granted.
+Allows user to update carrier config settings or go to view config settings screen.
+ */
 @RequiresApi(api = Build.VERSION_CODES.R)
 public class MainActivity extends AppCompatActivity {
     private TextView carrierPrivs_text;
     private TextView sim_info;
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-    private final String carrierFilename = App.getContext().getResources().getString(R.string.carrierFileName);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
         String carrierPrivsDisplay = "Has carrier privileges: " + tm.hasCarrierPrivileges();
         carrierPrivs_text.setText(carrierPrivsDisplay);
-        if (tm.hasCarrierPrivileges()) {
+        if (tm.hasCarrierPrivileges() || hasReadPhoneStatePermissions()) {
             getSubId();
         }
         FileMethods.makeConfigFileIfFirstTime();
@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void updateConfig(View view) {
         Log.d(LOG_TAG, "Update config button clicked!");
-        CharSequence text;
         TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
         String carrierPrivsDisplay = "Has carrier privileges: "+tm.hasCarrierPrivileges();
         if (!tm.hasCarrierPrivileges()) {
@@ -74,16 +73,20 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(App.getContext(), "Updating config...", Toast.LENGTH_SHORT).show();
         }
         int subId = getSubId();
-        System.out.println(subId == 1);
         CarrierConfigManager configManager = (CarrierConfigManager) getSystemService(CARRIER_CONFIG_SERVICE);
         configManager.notifyConfigChangedForSubId(subId);
     }
 
-    // Returns the subId of the sim card and updates the sim info displayed
-    // Hasn't been tested with multiple sims
+    // Returns the process subId and updates the sim info displayed
     public int getSubId() {
         SubscriptionManager sm = (SubscriptionManager) getSystemService(TELEPHONY_SUBSCRIPTION_SERVICE);
-        List<SubscriptionInfo> subInfoList = sm.getActiveSubscriptionInfoList(); // doesn't require permission if has Carrier Privileges
+        // doesn't require permission if has Carrier Privileges
+        @SuppressLint("MissingPermission") List<SubscriptionInfo> subInfoList = sm.getActiveSubscriptionInfoList();
+        if (subInfoList.isEmpty()) {
+            String text = "No Sim";
+            sim_info.setText(text);
+            return -1;
+        }
         StringBuilder simIds = new StringBuilder();
         for (SubscriptionInfo subscriptionInfo : subInfoList) {
             simIds.append(subscriptionInfo.getDisplayName()).append("\n");
@@ -97,17 +100,19 @@ public class MainActivity extends AppCompatActivity {
     // Checks whether app has READ_PHONE permission
     private boolean hasReadPhoneStatePermissions() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            sim_info.setText("May need to grant phone and storage permissions in Settings.");
-            return false;
-        }
-        return true;
+            requestPermissionLauncher.launch(android.Manifest.permission.READ_PHONE_STATE);
+        } else { return true; }
+        return ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
     }
+
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    getSubId();
+                } else {
+                    String text = "May need to grant phone permissions in Settings.";
+                    sim_info.setText(text);
+                }
+            });
 
 }

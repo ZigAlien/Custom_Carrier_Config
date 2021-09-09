@@ -10,18 +10,20 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
+/*
+Main Activity 3.
+Allows user to edit the contents of the app's saved configuration file.
+ */
 public class MainActivity3 extends AppCompatActivity {
 
     private EditText editText;
-    private final String carrierFilename = App.getContext().getResources().getString(R.string.carrierFileName);;
+    private final String carrierFilename = FileMethods.carrierFilename;
     private static final String LOG_TAG = MainActivity3.class.getSimpleName();
 
     @Override

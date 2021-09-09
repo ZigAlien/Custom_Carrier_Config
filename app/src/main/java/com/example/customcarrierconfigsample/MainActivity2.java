@@ -2,10 +2,8 @@ package com.example.customcarrierconfigsample;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.renderscript.ScriptGroup;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
@@ -18,16 +16,21 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
+/*
+Main Activity 2.
+Displays the config values currently saved in the app.
+Allows user to reset values to the default or go to an editing screen
+where they can edit values.
+ */
 public class MainActivity2 extends AppCompatActivity {
 
     private TextView xml_text;
 
-    private final String carrierFilename = App.getContext().getResources().getString(R.string.carrierFileName);
+    private final String carrierFilename = FileMethods.carrierFilename;
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     @Override
@@ -55,16 +58,6 @@ public class MainActivity2 extends AppCompatActivity {
         } catch (XmlPullParserException | IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public CarrierKeyPair processPair(XmlPullParser parser) throws IOException, XmlPullParserException {
-        CarrierKeyPair currPair = new CarrierKeyPair();
-        String name = parser.getAttributeValue(null, "name");
-        if (name != null) {
-            currPair.name = "KEY_" + name.toUpperCase();
-        }
-        currPair.value = parser.getAttributeValue(null, "value");
-        return currPair;
     }
 
     private void processParsing(XmlPullParser parser) throws XmlPullParserException, IOException {
@@ -123,24 +116,24 @@ public class MainActivity2 extends AppCompatActivity {
         StringBuilder builder = new StringBuilder();
 
         for (CarrierKeyPair pair : carrierBools) {
-            builder.append(pair.name + ": " + pair.value + "\n");
+            builder.append(pair.name).append(": ").append(pair.value).append("\n");
         }
         builder.append("\n");
 
         for (CarrierKeyPair pair : carrierInts) {
-            builder.append(pair.name + ": " + pair.value + "\n");
+            builder.append(pair.name).append(": ").append(pair.value).append("\n");
         }
         builder.append("\n");
 
         for (CarrierKeyPair pair : carrierStrings) {
-            builder.append(pair.name + ": " + pair.value + "\n");
+            builder.append(pair.name).append(": ").append(pair.value).append("\n");
         }
         builder.append("\n");
 
         for (CarrierStringArray array : carrierStringArrays) {
-            builder.append(array.name + ":\n");
+            builder.append(array.name).append(":\n");
             for (String item : array.items) {
-                builder.append("  item: " + item + "\n");
+                builder.append("  item: ").append(item).append("\n");
             }
         }
 

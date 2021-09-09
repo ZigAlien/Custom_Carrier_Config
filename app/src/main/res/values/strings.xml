@@ -6,8 +6,9 @@
     <string name="xml_text">empty or mis-formatted config</string>
     <string name="carrierFileName">sample-default-config.xml</string>
     <string name="view_config_button_text">View Config Settings</string>
-    <string name="nextButtonText">Edit</string>
+    <string name="editButtonText">Edit</string>
     <string name="saveButtonText">Save</string>
-    <string name="resetButtonText">Reset</string>
     <string name="descriptionText">Click Update Config button, restart phone, or open and close sim slot to apply settings.</string>
+    <string name="resetText">Reset</string>
+    <string name="backText">Back</string>
 </resources>

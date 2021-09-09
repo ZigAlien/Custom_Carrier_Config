@@ -8,11 +8,12 @@ import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 public class FileMethods {
-    private static final String carrierFilename = App.getContext().getResources().getString(R.string.carrierFileName);
+    public static final String carrierFilename = App.getContext().getResources().getString(R.string.carrierFileName);
 
-    // Writes config file to app internal storage only the first time the app is used
+    // Writes config file from assets to app internal storage only the first time the app is used
     public static void makeConfigFileIfFirstTime() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
         if(!prefs.getBoolean("firstTime", false)) {
@@ -27,10 +28,9 @@ public class FileMethods {
     public static void makeConfigFile() {
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(
-                    App.getContext().getAssets().open(carrierFilename), "UTF-8"));
+                    App.getContext().getAssets().open(carrierFilename), StandardCharsets.UTF_8));
             String line;
             StringBuilder builder = new StringBuilder();
-            int i = 0;
 
             while ((line = br.readLine()) != null) {
                 builder.append(line).append("\n");

@@ -1,6 +1,5 @@
 package com.example.customcarrierconfigsample;
 
-import android.app.Service;
 import android.os.PersistableBundle;
 import android.service.carrier.CarrierIdentifier;
 import android.service.carrier.CarrierService;
@@ -12,7 +11,6 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -24,7 +22,7 @@ public class SampleCarrierConfigService extends CarrierService {
         Log.d(TAG, "Service created");
     }
 
-    private final String carrierFilename = App.getContext().getResources().getString(R.string.carrierFileName);
+    private final String carrierFilename = FileMethods.carrierFilename;
 
     @Override
     public PersistableBundle onLoadConfig(CarrierIdentifier id) {
