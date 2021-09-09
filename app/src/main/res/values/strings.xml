@@ -3,8 +3,11 @@
     <string name="feedback_text">No Sim</string>
     <string name="sampleServiceName">SampleCarrierConfigService</string>
     <string name="update_config_button_text">Update Config</string>
-    <string name="xml_text">empty config</string>
-    <string name="carrierFileName">sample-config.xml</string>
+    <string name="xml_text">empty or mis-formatted config</string>
+    <string name="carrierFileName">sample-default-config.xml</string>
     <string name="view_config_button_text">View Config Settings</string>
     <string name="nextButtonText">Edit</string>
+    <string name="saveButtonText">Save</string>
+    <string name="resetButtonText">Reset</string>
+    <string name="descriptionText">Click Update Config button, restart phone, or open and close sim slot to apply settings.</string>
 </resources>

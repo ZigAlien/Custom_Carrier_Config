@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.renderscript.ScriptGroup;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -25,7 +27,7 @@ public class MainActivity2 extends AppCompatActivity {
 
     private TextView xml_text;
 
-    private String carrierFilename = App.getContext().getResources().getString(R.string.carrierFileName);
+    private final String carrierFilename = App.getContext().getResources().getString(R.string.carrierFileName);
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     @Override
@@ -34,6 +36,7 @@ public class MainActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
 
         xml_text = (TextView) findViewById(R.id.xml_text);
+        xml_text.setMovementMethod(new ScrollingMovementMethod());
 
         parseXML();
     }
@@ -144,9 +147,25 @@ public class MainActivity2 extends AppCompatActivity {
         xml_text.setText(builder.toString());
     }
 
+
+    // When Edit button is clicked
     public void goToActivity3(View view) {
-        Log.d(LOG_TAG, "Next button clicked!");
+        Log.d(LOG_TAG, "Edit button clicked!");
         Intent intent = new Intent(this, MainActivity3.class);
         startActivity(intent);
+    }
+
+    public void goToActivityOne(View view) {
+        Log.d(LOG_TAG, "Edit button clicked!");
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    // When Reset button is clicked
+    public void resetConfig(View view) {
+        Log.d(LOG_TAG, "Reset Config button clicked!");
+        Toast.makeText(App.getContext(), "Resetting config file to default...", Toast.LENGTH_SHORT).show();
+        FileMethods.makeConfigFile();
+        parseXML();
     }
 }

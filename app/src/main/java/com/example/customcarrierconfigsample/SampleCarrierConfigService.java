@@ -24,7 +24,7 @@ public class SampleCarrierConfigService extends CarrierService {
         Log.d(TAG, "Service created");
     }
 
-    private String carrierFilename = App.getContext().getResources().getString(R.string.carrierFileName);
+    private final String carrierFilename = App.getContext().getResources().getString(R.string.carrierFileName);
 
     @Override
     public PersistableBundle onLoadConfig(CarrierIdentifier id) {
@@ -46,9 +46,7 @@ public class SampleCarrierConfigService extends CarrierService {
             parser.setInput(is);
             processParsing(config, parser);
             is.close();
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (XmlPullParserException | IOException e) {
             e.printStackTrace();
         }
     }

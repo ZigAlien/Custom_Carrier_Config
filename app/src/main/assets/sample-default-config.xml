@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <carrier_config>
+    <boolean name="hide_lte_plus_data_icon_bool" value="false"/>
     <boolean name="apn_expand_bool" value="true"/>
     <boolean name="allow_adding_apns_bool" value="true"/>
     <boolean name="carrier_settings_enable_bool" value="true"/>
-    <boolean name="carrier_volte_available_bool" value="false" />
+    <boolean name="carrier_volte_available_bool" value="true" />
     <boolean name="editable_enhanced_4g_lte_bool" value="true"/>
+    <int name="maxImageHeight" value="1944"/>
+    <int name="maxImageWidth" value="2592"/>
+    <int name="maxMessageSize" value="614400"/>
     <int name="maxSubjectLength" value="80"/>
-    <string name="carrier_name_string">Abcdefg</string>
+    <string name="carrier_name_string">LGS</string>
+    <string-array name="wfc_operator_error_codes_string_array" num="1">
+        <item value="REG09|0"/>
+    </string-array>
     <string-array name="read_only_apn_fields_string_array" num="0">
     </string-array>
 </carrier_config>

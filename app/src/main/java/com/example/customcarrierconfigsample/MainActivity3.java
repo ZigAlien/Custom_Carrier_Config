@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -20,8 +21,8 @@ import java.nio.charset.StandardCharsets;
 public class MainActivity3 extends AppCompatActivity {
 
     private EditText editText;
-    // private String carrierFilename = App.getContext().getResources().getString(R.string.carrierFileName);
-    private String carrierFilename = App.getContext().getResources().getString(R.string.carrierFileName);;
+    private final String carrierFilename = App.getContext().getResources().getString(R.string.carrierFileName);;
+    private static final String LOG_TAG = MainActivity3.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,23 +32,7 @@ public class MainActivity3 extends AppCompatActivity {
         showFileContents();
     }
 
-//    public void showFileContents() {
-//        try {
-//            BufferedReader br = new BufferedReader(new InputStreamReader(getAssets().open(filename), "UTF-8"));
-//            String line;
-//            StringBuilder builder = new StringBuilder();
-//            int i = 0;
-//
-//            while ((line = br.readLine()) != null) {
-//                builder.append(line).append("\n");
-//            }
-//            br.close();
-//            editText.setText(builder.toString());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
+    // Show carrier config file contents inside the TextInputEditText
     public void showFileContents() {
         try {
             FileInputStream fis = App.getContext().openFileInput(carrierFilename);
@@ -66,7 +51,9 @@ public class MainActivity3 extends AppCompatActivity {
         }
     }
 
+    // When Save button clicked, save contents of the TextInputEditText to the carrier config file
     public void saveText(View view) {
+        Log.d(LOG_TAG, "Save button clicked!");
         String text = editText.getText().toString();
         FileOutputStream outputStream;
         try{
@@ -79,15 +66,4 @@ public class MainActivity3 extends AppCompatActivity {
         }
         showFileContents();
     }
-
-    /* Allowing user to edit config file */
-    public void getConfigFile() {
-        File file = new File(App.getContext().getFilesDir(), App.getContext().getResources().getString(R.string.carrierFileName));
-        String[] files = App.getContext().fileList();
-        System.out.println("ehehehhe");
-        for (String f : files) {
-            System.out.println(f);
-        }
-    }
-
 }
