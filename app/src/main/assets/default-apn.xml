@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<apns version="8">
+    <apn>
+        <string name="name" value="LGS"/>
+        <string name="apn" value="vzwinternet" />
+        <string name="mcc" value="311" />
+        <string name="mnc" value="480" />
+        <string name="type" value="default,supl,dun" />
+        <string name="protocol" value="IPV4V6" />
+<!--        <int name="network_type_bitmask" value="0111111111000100" />-->
+        <boolean name="carrier_enabled" value="true" />
+    </apn>
+</apns>
+    <!--    <apn carrier="Verizon"-->
+    <!--        mcc="311"-->
+    <!--        mnc="480"-->
+    <!--        apn="VZWINTERNET"-->
+    <!--        type="default,supl,dun"-->
+    <!--        protocol="IPV4V6"-->
+    <!--        roaming_protocol="IPV4V6"-->
+    <!--        carrier_enabled="true"-->
+    <!--        network_type_bitmask="2|3|4|5|6|7|8|9|10"-->
+    <!--    />-->

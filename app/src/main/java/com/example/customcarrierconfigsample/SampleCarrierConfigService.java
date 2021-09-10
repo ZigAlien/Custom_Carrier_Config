@@ -1,9 +1,18 @@
 package com.example.customcarrierconfigsample;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.PersistableBundle;
+import android.provider.Telephony;
 import android.service.carrier.CarrierIdentifier;
 import android.service.carrier.CarrierService;
+import android.telephony.CarrierConfigManager;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -11,9 +20,11 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SampleCarrierConfigService extends CarrierService {
     private static final String TAG = "SampleCarrierConfigServ";
@@ -24,12 +35,17 @@ public class SampleCarrierConfigService extends CarrierService {
 
     private final String carrierFilename = FileMethods.carrierFilename;
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     public PersistableBundle onLoadConfig(CarrierIdentifier id) {
         Log.d(TAG, "Config being fetched");
         PersistableBundle config = new PersistableBundle();
         loadConfigFromXml(config);
         Log.d(TAG, "Config completed");
+
+        // inserts APN (comment this out if there are problems)
+        (new ApnProvider()).insertApnFromXml();
+
         return config;
     }
 
@@ -38,7 +54,6 @@ public class SampleCarrierConfigService extends CarrierService {
         try {
             parserFactory = XmlPullParserFactory.newInstance();
             XmlPullParser parser = parserFactory.newPullParser();
-            // InputStream is = getAssets().open(carrierFilename);
             FileInputStream fis = App.getContext().openFileInput(carrierFilename);
             InputStreamReader is = new InputStreamReader(fis, StandardCharsets.UTF_8);
             parser.setInput(is);
@@ -94,5 +109,4 @@ public class SampleCarrierConfigService extends CarrierService {
             config.putStringArray(array.name, array.items);
         }
     }
-
 }
